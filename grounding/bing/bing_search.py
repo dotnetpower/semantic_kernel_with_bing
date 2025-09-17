@@ -3,13 +3,13 @@
 
 import asyncio
 import json
-import time
 from datetime import datetime, timedelta
-from functools import wraps
 
 import aiohttp
 from azure.core.credentials import TokenCredential
 from pydantic import BaseModel, Field
+
+from utils.decorators import measure_time_async
 
 
 class GroundingWithBingSearch:
@@ -37,17 +37,7 @@ class GroundingWithBingSearch:
 
         # print(f"BingSearch initialized with endpoint: {self.endpoint}, api_version: {self.api_version}, connection_id: {self.connection_id}")
 
-    # region Decorators
-    def measure_time_async(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            start = time.perf_counter()
-            result = await func(*args, **kwargs)
-            end = time.perf_counter()
-            print(f"{func.__name__} elapsed: {end - start:.4f}s")
-            return result
-        return wrapper
-    # endregion
+    # Note: measure_time_async decorator is now imported from utils.decorators
 
     # region Private methods
     def _get_token(self):
